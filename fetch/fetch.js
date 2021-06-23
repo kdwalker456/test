@@ -1,21 +1,22 @@
-const weatherLoop = data => {
-  //This grabs the weather periods
+const weatherLoop = (data) => {
+  // This grabs the weather periods
 
-  const periods = data.properties.periods;
-  //grabs the weather div in the html
-  let weather = document.getElementById('weather');
-  //loops through the weather periods.
-  periods.forEach(arr => {
-    //creates a section for each period
-    let weatherDisplay = document.createElement('section');
-    //grabs weatherDisplay as the child of weather
+  const { periods } = data.properties;
+  // grabs the weather div in the html
+  const weather = document.getElementById('weather');
+  weather.innerHTML = '';
+  // loops through the weather periods.
+  periods.forEach((arr) => {
+    // creates a section for each period
+    const weatherDisplay = document.createElement('section');
+    // grabs weatherDisplay as the child of weather
     weather.appendChild(weatherDisplay);
-    
-    let header = document.createElement('h2');
+
+    const header = document.createElement('h2');
     weatherDisplay.appendChild(header);
     header.innerHTML = arr.name;
 
-    let detail = document.createElement('div');
+    const detail = document.createElement('div');
     weatherDisplay.appendChild(detail);
     detail.innerHTML = arr.detailedForecast;
 
@@ -26,20 +27,16 @@ const weatherLoop = data => {
       day: 'numeric',
     });
 
-    let dateLog = document.createElement('div');
+    const dateLog = document.createElement('div');
     header.appendChild(dateLog);
     dateLog.innerHTML = dateTimeFormat.format(date);
+  });
+};
 
-  })
-}
-
-fetch('https://api.weather.gov/gridpoints/OKX/34,32/forecast')
-  .then(response => response.json())
-  .then(data => weatherLoop(data));
-// console.log(weatherLoop)
- 
-
-
-
-
-
+// console.log(weatherLoop)c
+const button = document.getElementById('button');
+button.addEventListener('click', () => {
+  fetch('https://api.weather.gov/gridpoints/OKX/34,32/forecast')
+    .then((response) => response.json())
+    .then((data) => weatherLoop(data));
+});
